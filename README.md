@@ -1,1 +1,1 @@
-# simplex-php framerwork
+# simplex-php framework
