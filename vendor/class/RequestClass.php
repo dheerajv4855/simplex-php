@@ -8,10 +8,9 @@ class RequestClass implements Request
 	
 	function __construct()
 	{
-		# code...
-		foreach ($_SERVER as $key => $value) {
-			# code...
+		# code...		
+		foreach ($_REQUEST as $key => $value)			
 			$this->{$key} = $value;
-		}
+		
 	}
 }
