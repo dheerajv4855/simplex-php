@@ -1,16 +1,24 @@
 <?php 
 
+
 $app = new App();
-$router = $app->get("Router");
+$route = $app->get("Router");
 
-$router->group('/api',function($router){
 
-	$router->get("/home",function(){
-		echo "group=> home";
-	});
-	$router->get("/about",function(){
-		echo "group=> about";
-	});
+$route->get('/api/test',function(Request $request,Response $response){	
+	$response->json(["result"=>"success"]);
+	
+});
+
+$route->get('/abc/home','HomeController@index');
+$route->get('/abc','HomeController@test');
+/*
+$route->group('/api',function($route){
+
+	$route->get('/test','HomeController@test');
+	$route->get('/demo','HomeController@index');
+
+
 },['demo']);
-
+*/
 
