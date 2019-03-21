@@ -1,6 +1,6 @@
 <?php
 
-
+include_once(__DIR__."/class/Kernal.php");
 spl_autoload_register("autoloadClass");
 function autoloadClass($class)
 {
