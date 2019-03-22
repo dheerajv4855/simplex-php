@@ -1,0 +1,10 @@
+{
+	"autoload":{
+		"classmap":[			
+			"vendor/flare/core/",
+			"controller/",
+			"middleware/"
+		]
+		
+	}
+}
