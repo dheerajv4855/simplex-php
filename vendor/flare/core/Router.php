@@ -18,15 +18,13 @@ class Router
 			global $middleware;				
 			$this->middleware = $middleware;
 			$this->routeURI = $_SERVER['PATH_INFO'];
-			$this->request = new Request();
-			$this->response = new Response();
+			$this->params[] = new Request();
+			$this->params[] = new Response();
 			$this->reqMiddle=[];
-			$this->params[] = $this->request;
-			$this->params[] = $this->response;
+			
 	}
 	function group($prefix,$func,$middle=[])
-	{
-				
+	{				
 		if(strpos($this->routeURI, $prefix) !== false)
 		{	
 			$this->reqMiddle = $middle;
@@ -42,6 +40,18 @@ class Router
 	{	
 		$this->dispatch($route,$func,"POST");		
 	}
+	function put($route,$func)
+	{	
+		$this->dispatch($route,$func,"PUT");		
+	}
+	function patch($route,$func)
+	{	
+		$this->dispatch($route,$func,"PATCH");		
+	}
+	function delete($route,$func)
+	{	
+		$this->dispatch($route,$func,"DELETE");		
+	}
 	function dispatch($route,$func,$method)
 	{
 		$route = $this->prefix.$route;			
@@ -52,8 +62,7 @@ class Router
 			$requestRoute = explode('/',$this->routeURI);			
 			foreach ($definedRoute as $key => $value) {			
 				
-				if(strpos($value,':')!== false){	
-						
+				if(strpos($value,':')!== false){							
 					$this->params[] = $requestRoute[$key];
 					$definedRoute[$key] = $requestRoute[$key];
 				}					
@@ -66,13 +75,15 @@ class Router
 
 		if($this->routeURI === $route && $_SERVER['REQUEST_METHOD'] === $method)
 		{
-
+				/**
+				* Middleware Function call 
+				**/
 				if(count($this->reqMiddle)>0)				
 				foreach ($this->reqMiddle as $value) {
-					$class =  $this->middleware[$value];
-					$a = new $class;
-					$a->run($this->request);
-				}				
+					$class =  $this->middleware[$value];					
+					$this->params[1] = call_user_func_array([new $class,'run'],$this->params);	
+				}			
+
 				if(is_string($func))
 				{
 					if(strpos($func,'@')!== false){				

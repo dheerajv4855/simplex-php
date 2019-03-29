@@ -11,4 +11,6 @@ $router->get('/home',function()
 $router->group('/app',function($router)
 	{
 		$router->get('/about','AboutController@index');
-	},['auth']);
+	},
+	['auth','demo']
+	);
